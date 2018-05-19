@@ -10,7 +10,7 @@ var prefix = "^^";
 var memberNumber = client.users.size;
 var serverNumber = client.guilds.size;
 
- client.user.setGame(`prefix: ${prefix}` + " | I'm tutoBOT", "http://twitch.tv/bot");
+ client.user.setGame(`prefix: !{prefix}`);
 
  client.user.setStatus("idle");
 
@@ -25,16 +25,16 @@ const channel = member.guild.channels.find('name', 'tuto-bot');
 if(!channel) {
 return;
 }
-channel.send(`${member.user.username} a rejoint 
-${member.guild.name}`);
+channel.send(`!{member.user.username} a rejoint 
+!{member.guild.name}`);
 });
 client.on("guildMemberRemove", member => {
 const channel = member.guild.channels.find('name', 'tuto-bot');
 if(!channel) {
 return;
 }
-channel.send(`${member.user.username} a quitté 
-${member.guild.name}`);
+channel.send(`!{member.user.username} a quitté 
+!{member.guild.name}`);
 });
 client.on("messageDelete",  function(message) {
 if(!message.author.bot){
@@ -43,8 +43,8 @@ const channel = message.guild.channels.find('name', 'tuto-bot');
 if(!channel) {
 return;
 }
-channel.send(`message by ${message.member.user.username} deleted in 
-${message.channel.name}: ${message.content}`);
+channel.send(`message by !{message.member.user.username} deleted in 
+!{message.channel.name}: !{message.content}`);
 }}
 });
 client.on("messageUpdate",  (message, oldMessage, newMessage) =>  {
@@ -54,8 +54,8 @@ const channel = message.guild.channels.find('name', 'tuto-bot');
 if(!channel) {
 return;
 }
-channel.send(`message by ${message.author.username} a edité
-${message.content} à ${oldMessage}`);
+channel.send(`message by !{message.author.username} a edité
+!{message.content} à !{oldMessage}`);
 }}
 });
 
@@ -109,11 +109,11 @@ let args1 = msg.content.split(" ").slice(1);
 if (args1.length === 0) {
 afk[msg.author.id] = {"reason" : true};
 msg.delete();
-msg.channel.send(`tu es désormais afk, met **${prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
+msg.channel.send(`tu es désormais afk, met **!{prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
 }else{
 afk[msg.author.id] = {"reason" : args1.join(" ")};
 msg.delete();
-msg.channel.send(`tu es désormais afk, met **${prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
+msg.channel.send(`tu es désormais afk, met **!{prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
 }
 fs.writeFile("./afks.json", JSON.stringify(afk), (err) => { if (err) console.error(err);});
 }
@@ -123,9 +123,9 @@ fs.writeFile("./afks.json", JSON.stringify(afk), (err) => { if (err) console.err
 if(msg.mentions.users.size > 0) {
 if (afk[msg.mentions.users.first().id]) {
 if (afk[msg.mentions.users.first().id].reason === true) {
-message.channel.send(`@${mentionned.username} is AFK: pas de raison`);
+message.channel.send(`@!{mentionned.username} is AFK: pas de raison`);
 }else{
-message.channel.send(`@${mentionned.username} is AFK: ${afk[msg.mentions.users.first().id].reason}`);
+message.channel.send(`@!{mentionned.username} is AFK: !{afk[msg.mentions.users.first().id].reason}`);
 }
 }
 }
@@ -219,7 +219,7 @@ if(!kickMember){
 return msg.channel.send("**:x: Cet utilisateur n'est certainement pas valide**")
 }
 kickMember.kick().then(member => {
-msg.channel.send(`**${member.user.username}** a bien été kick**`);
+msg.channel.send(`**!{member.user.username}** a bien été kick**`);
 })
 }
 if(msg.content.startsWith(prefix + 'ban')){
@@ -238,7 +238,7 @@ if(!banMember){
 return msg.channel.send("**:x: Cet utilisateur n'est certainement pas valide**")
 }
 banMember.ban().then(member => {
-msg.channel.send(`**${member.user.username}** a bien été ban**`);
+msg.channel.send(`**!{member.user.username}** a bien été ban**`);
 })
 }
 if(msg.content.startsWith(prefix + 'mute')){
@@ -257,7 +257,7 @@ if(!muteMember){
 return msg.channel.send("**:x: Cet utilisateur n'est certainement pas valide**")
 }
 msg.channel.overwritePermissions(muteMember, {SEND_MESSAGES: false}).then(member => {
-msg.channel.send(`**${member.user.username}** a bien été mute**`);
+msg.channel.send(`**!{member.user.username}** a bien été mute**`);
 })
 }
 if(msg.content.startsWith(prefix + 'unmute')){
@@ -276,11 +276,11 @@ if(!unmuteMember){
 return msg.channel.send("**:x: Cet utilisateur n'est certainement pas valide**")
 }
 msg.channel.overwritePermissions(unmuteMember, {SEND_MESSAGES: true}).then(member => {
-msg.channel.send(`**${member.user.username}** a bien été unmute**`);
+msg.channel.send(`**!{member.user.username}** a bien été unmute**`);
 })
 }
 });
 
 
 
-client.login(token)
+client.login(TOKEN)
